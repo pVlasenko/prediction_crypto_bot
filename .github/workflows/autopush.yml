@@ -1,0 +1,31 @@
+name: Auto Push Code
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  push_code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "AutoBot"
+          git config --global user.email "autobot@example.com"
+
+      - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_ACCESS_TOKEN }}
+        run: |
+          git add .
+          git commit -m "Auto commit from GitHub Actions"
+          git push https://x-access-token:${{ secrets.BOT_ACCESS_TOKEN }}@github.com/pVlasenko/prediction_crypto_bot.git main
